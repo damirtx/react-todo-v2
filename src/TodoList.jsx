@@ -4,7 +4,7 @@ export function TodoList({ todos, toggleTodo, deleteTodo }) {
 	return (
 		<ul className="tasks__list">
 			{todos.length === 0 && 'No Todos'}
-			{todos.map(todo => {
+			{todos.filter(todo => todo.visible).map(todo => {
 				return (
 					<TodoItem
 						{...todo}

@@ -5,40 +5,36 @@ import './styles.css'
 
 export default function App() {
 	const [todos, setTodos] = useState(() => {
-    const localValue = localStorage.getItem('ITEMS')
-    if (localValue === null) return []
-    return JSON.parse(localValue)
-  })
+		const localValue = localStorage.getItem('ITEMS')
+		if (localValue === null) return []
+		return JSON.parse(localValue)
+	})
 
-  useEffect(() => {
-    localStorage.setItem('ITEMS', JSON.stringify(todos))
-  }, [todos])
+	useEffect(() => {
+		localStorage.setItem('ITEMS', JSON.stringify(todos))
+	}, [todos])
 
 	function addTodo(title) {
 		setTodos(currentTodos => {
 			return [
 				...currentTodos,
-				{ id: crypto.randomUUID(), title, complited: false }
+				{ id: crypto.randomUUID(), title, completed: false, visible: true }
 			]
 		})
 	}
 
 	function toggleTodo(id, completed) {
-		setTodos(currentTodos => {
-			return currentTodos.map(todo => {
-				if (todo.id === id) {
-					return { ...todo, completed }
-				}
-
-				return todo
-			})
-		})
+		setTodos(currentTodos =>
+			currentTodos.map(todo => (todo.id === id ? { ...todo, completed } : todo))
+		)
 	}
 
 	function deleteTodo(id) {
-		setTodos(currentTodos => {
-			return currentTodos.filter(todo => todo.id !== id)
-		})
+		setTodos(currentTodos =>
+			currentTodos.map(todo =>
+				todo.id === id ? { ...todo, visible: false } : todo
+			)
+		)
 	}
 
 	return (
